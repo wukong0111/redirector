@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -27,5 +29,10 @@ func main() {
 		log.Println(path, u.String())
 		return c.Redirect(http.StatusTemporaryRedirect, u.String())
 	})
-	e.Logger.Fatal(e.Start(":3000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	address := fmt.Sprintf("0.0.0.0:%s", port)
+	e.Logger.Fatal(e.Start(address))
 }
